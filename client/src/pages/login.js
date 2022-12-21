@@ -1,8 +1,32 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 import Footer from "../components/footer";
 
 const LogIn = () => {
+    const navigate = useNavigate();
+    const [organisation, setOrganisation] = useState("")
     const [password, setPassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const handleLogIn = async (e) => {
+        e.preventDefault();
+
+        const user = { organisation, password }
+
+        if (organisation && password) {
+            const res = await axios.post('http://localhost:4000/login', user);
+            setErrorMessage(res.data.message);
+            if (res.data.message === "Success!") {
+                navigate("/add-event");
+            }
+            return
+        } else {
+            setErrorMessage("Invalid input, try again.")
+        }
+
+        setErrorMessage("")
+    }
 
     return (
         <>
@@ -18,9 +42,13 @@ const LogIn = () => {
                     >
                         Organisation
                     </label>
-                    <select className="w-full bg-light-blue text-black rounded py-3 px-4 focus:outline-blue focus:bg-white focus:border-gray-500 placeholder:text-grey active:text-black">
+                    <select
+                        className="w-full bg-light-blue text-black rounded py-3 px-4 focus:outline-blue focus:bg-white focus:border-gray-500 placeholder:text-grey active:text-black"
+                        onChange={(e) => { setOrganisation(e.target.value) }}
+                        required
+                    >
                         <option>Select</option>
-                        <option value="BAQC-ESEA">BAQC ESEA</option>
+                        <option value="BAQC ESEA">BAQC ESEA</option>
                         <option value="Queer China UK">Queer China UK</option>
                         <option value="Pink Dot Ldn">Pink Dot Ldn</option>
                     </select>
@@ -33,15 +61,18 @@ const LogIn = () => {
                     <input
                         className="appearance-none block w-full bg-light-blue text-black rounded py-3 px-4 focus:outline-blue focus:bg-white focus:border-gray-500 placeholder:text-grey"
                         id="password"
-                        type="text"
+                        type="password"
                         placeholder="Password"
-                        onChange={setPassword}
+                        onChange={(e) => { setPassword(e.target.value) }}
                         required
                     />
-                    <button className="w-fit bg-black text-white rounded py-2 px-4 mt-5 place-self-center">
+                    <button
+                        className="w-fit bg-black text-white rounded py-2 px-4 mt-5 place-self-center"
+                        onClick={handleLogIn}
+                    >
                         Log in
                     </button>
-                    <p className="text-red text-center">Error message</p>
+                    <p className="text-red text-center">{errorMessage}</p>
                     <p className="text-grey text-center">Forgot password?</p>
                 </form>
             </div>
