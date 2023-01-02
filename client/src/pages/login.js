@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Footer from "../components/footer";
+import Header from "../components/header";
 
-const LogIn = () => {
+const LogIn = ({ organisation, setOrganisation }) => {
     const navigate = useNavigate();
-    const [organisation, setOrganisation] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
 
@@ -18,6 +18,7 @@ const LogIn = () => {
             const res = await axios.post('http://localhost:4000/login', user);
             setErrorMessage(res.data.message);
             if (res.data.message === "Success!") {
+                setOrganisation(organisation)
                 navigate("/add-event");
             }
             return
@@ -30,11 +31,11 @@ const LogIn = () => {
 
     return (
         <>
-            {/* To add Header with condition rendering of certain elements */}
-            <div className="flex flex-col items-center justify-center h-screen">
+            <Header />
+            <div className="flex flex-col items-center justify-center my-16 py-4">
                 <h1 className="text-2xl font-medium py-3">Log In</h1>
-                <p className="text-grey text-center w-1/2 md:w-2/6 lg:w-1/6 py-1">Only organisational members have access to edit the events page</p>
-                <p className="text-center text-blue mb-4">Request access</p>
+                <p className="text-grey text-center w-1/2 md:w-2/5 lg:w-1/6 py-1">Only organisational members have access to edit the events page</p>
+                <button className="text-center text-blue mb-4 hover:opacity-70">Request access</button>
                 <form className="flex flex-col py-4 gap-4">
                     <label
                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold"
@@ -67,7 +68,7 @@ const LogIn = () => {
                         required
                     />
                     <button
-                        className="w-fit bg-black text-white rounded py-2 px-4 mt-5 place-self-center"
+                        className="w-fit bg-purple text-white font-bold rounded py-2 px-4 mt-5 place-self-center hover:opacity-70"
                         onClick={handleLogIn}
                     >
                         Log in

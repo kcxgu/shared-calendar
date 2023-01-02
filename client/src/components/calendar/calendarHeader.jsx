@@ -19,7 +19,7 @@ const CalendarHeader = () => {
 
     return (
         <header className="px-4 lg:px-6 py-6 flex flex-row items-center justify-between">
-            <h1 className="text-xl py-2">Calendar</h1>
+            <h1 className="text-xl py-2">Upcoming Events</h1>
             <div className="flex flex-row items-center gap-4 text-sm md:text-lg">
                 <button
                     className="bg-blue text-white text-sm rounded py-1 px-2 md:py-2 md:px-4 hover:bg-light-blue hover:text-black"
