@@ -1,31 +1,51 @@
-import TextInput from "../utils/textinput";
 import { useState } from "react";
+import axios from "axios";
+import TextInput from "../utils/textinput";
 
-const AddEventForm = ({ organisation }) => {
+const AddEventForm = ({ currentUser }) => {
+
     const [date, setDate] = useState("");
-    // const [organisation, setOrganisation] = useState("");
     const [title, setTitle] = useState("");
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [location, setLocation] = useState("")
-    const [description, setDescription] = useState("")
-    const [link, setLink] = useState("")
+    const [location, setLocation] = useState("");
+    const [description, setDescription] = useState("");
+    const [link, setLink] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const eventInfo = {
         date: date,
         start: startTime,
         end: endTime,
-        organisation: organisation,
+        organisation: currentUser,
         event: title,
         location: location,
         description: description,
         link: link
     }
 
+    console.log(eventInfo);
+    console.log(errorMessage);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (date && startTime && endTime && title && location && description && link) {
+            const res = await axios.post(process.env.REACT_APP_SUBMIT, eventInfo);
+            setErrorMessage(res.data.message);
+            if (res.data.message === "Success!") {
+            }
+            setErrorMessage("Your event has been added!");
+        } else {
+            setErrorMessage("Ensure all fields are completed before submission");
+        }
+    }
+
     return (
         <>
-            <div className="flex flex-col items-center justify-center h-screen">
-                <h1 className="text-2xl py-3">Add Event</h1>
+            <div className="flex flex-col items-center justify-center">
+                <h1 className="text-2xl mt-8">Hi there, {currentUser}</h1>
+                <h1 className="text-2xl py-3">We're very excited for your next event!</h1>
                 <form className="flex flex-col py-4 gap-4 sm:gap-4 w-9/12 sm:w-1/2 max-w-md">
                     <div>
                         <label
@@ -40,7 +60,7 @@ const AddEventForm = ({ organisation }) => {
                             type="date"
                             placeholder="date"
                             value={date}
-                            onChange={setDate}
+                            onChange={(e) => setDate(e.target.value)}
                             required
                         />
                     </div>
@@ -57,7 +77,7 @@ const AddEventForm = ({ organisation }) => {
                             type="time"
                             placeholder="start time"
                             value={startTime}
-                            onChange={setStartTime}
+                            onChange={(e) => setStartTime(e.target.value)}
                             required
                         />
                     </div>
@@ -74,7 +94,7 @@ const AddEventForm = ({ organisation }) => {
                             type="time"
                             placeholder="end time"
                             value={endTime}
-                            onChange={setEndTime}
+                            onChange={(e) => setEndTime(e.target.value)}
                             required
                         />
                     </div>
@@ -88,7 +108,7 @@ const AddEventForm = ({ organisation }) => {
                         <TextInput
                             id="title"
                             value={title}
-                            onChange={setTitle}
+                            onChange={(e) => setTitle(e.target.value)}
                             placeholder="A new queer event"
                             required
                         />
@@ -103,7 +123,7 @@ const AddEventForm = ({ organisation }) => {
                         <TextInput
                             id="location"
                             value={location}
-                            onChange={setLocation}
+                            onChange={(e) => setLocation(e.target.value)}
                             placeholder="18 Somewhere Queer, London, SW1A 1AA"
                             required
                         />
@@ -118,7 +138,7 @@ const AddEventForm = ({ organisation }) => {
                         <TextInput
                             id="description"
                             value={description}
-                            onChange={setDescription}
+                            onChange={(e) => setDescription(e.target.value)}
                             placeholder="Brief but queer description of event"
                             required
                         />
@@ -133,15 +153,18 @@ const AddEventForm = ({ organisation }) => {
                         <TextInput
                             id="link"
                             value={link}
-                            onChange={setLink}
+                            onChange={(e) => setLink(e.target.value)}
                             placeholder="https://www.queerevent.com"
                             required
                         />
                     </div>
-                    <button className="w-fit bg-black text-white rounded py-2 px-4 mt-5 place-self-center">
+                    <button
+                        className="w-fit bg-black text-white rounded py-2 px-4 mt-5 place-self-center"
+                        onClick={handleSubmit}
+                    >
                         Submit
                     </button>
-                    <p className="text-grey text-center">Error message</p>
+                    <p className="text-red-500 text-center">{errorMessage}</p>
                 </form>
             </div>
         </>

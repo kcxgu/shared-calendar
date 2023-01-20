@@ -1,8 +1,4 @@
-const TextInput = ({ id, placeholder, value, inputHandler }) => {
-
-    function handleChange(e) {
-        inputHandler(e.target.value);
-    };
+const TextInput = ({ id, placeholder, value, onChange }) => {
 
     return (
         <input
@@ -11,7 +7,7 @@ const TextInput = ({ id, placeholder, value, inputHandler }) => {
             type="text"
             placeholder={placeholder}
             value={value}
-            onChange={handleChange}
+            onChange={onChange}
             required
         />
     )

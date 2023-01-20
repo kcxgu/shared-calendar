@@ -4,17 +4,19 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import { logInRouter } from './routes/login.js';
+import { submitRouter } from './routes/submit.js';
 
 const app = express();
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/login', logInRouter);
+app.use('/submit', submitRouter);
 
 const port = process.env.PORT;
 const host = process.env.HOST;

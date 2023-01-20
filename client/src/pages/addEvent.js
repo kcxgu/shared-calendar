@@ -18,7 +18,7 @@ const AddEvent = ({ organisation }) => {
 
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <AddEventForm organisation={organisation} />
             {/* <div className="flex flex-col sm:flex-row items-center justify-between">
                 <div className="h-screen flex flex-col w-full max-w-7xl sm:pr-12 lg:pr-24">
@@ -26,7 +26,7 @@ const AddEvent = ({ organisation }) => {
                     <Month month={currentMonth} />
                 </div>
             </div> */}
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }
